@@ -4,6 +4,7 @@ import java.security.MessageDigest
 import io.iohk.atala.swetest.Base._
 
 import scala.annotation.tailrec
+import scala.collection.mutable
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -262,17 +263,30 @@ object Miner {
     def commonAncestor(that: Blockchain): Option[Block]
   }
 
-  // Implement an in-memory blockchain that internally has an indexing data structure.
-  // The purpose of this internal data structure is to avoid traversing the linked list
-  // of blocks when answering queries like findByIndex.
+
+  /**
+   * A fast blockchain implementation that uses an indexing data structure internally
+   * to avoid traversing the linked list of blocks when answering queries like findByIndex.
+   */
   class FastBlockchain extends Blockchain {
-    def append(block: Block): Unit = ???
+    private val blockIndex: mutable.HashMap[Int, Block] = mutable.HashMap.empty
+    private val blockHashes: mutable.HashMap[Hash, Block] = mutable.HashMap.empty
 
-    def findByIndex(index: Int): Option[Block] = ???
+    def append(block: Block): Unit = {
+      blockIndex.put(block.index, block)
+      blockHashes.put(block.cryptoHash, block)
+    }
 
-    def findByHash(hash: Hash): Option[Block] = ???
+    def findByIndex(index: Int): Option[Block] = blockIndex.get(index)
 
-    def commonAncestor(that: Blockchain): Option[Block] = ???
+    def findByHash(hash: Hash): Option[Block] = blockHashes.get(hash)
+
+    def commonAncestor(that: Blockchain): Option[Block] = that match {
+      case blockchain: FastBlockchain =>
+        val commonIndices = blockIndex.keySet.intersect(blockchain.blockIndex.keySet)
+        commonIndices.flatMap(index => blockIndex.get(index)).headOption
+      case _ => None
+    }
   }
 }
 
