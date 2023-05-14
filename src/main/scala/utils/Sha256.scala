@@ -10,18 +10,18 @@ object Sha256 {
   val NumberOfBytes = 32
   val TheDigest: MessageDigest = MessageDigest.getInstance("SHA-256")
 
-  val Zero_Hash: Hash = Sha256(Array.fill[Byte](32)(0))
+  val ZeroHash: Hash = Hash(Array.fill[Byte](NumberOfBytes)(0))
 
 
   /**
    * Applies the SHA-256 hash algorithm to the given byte arrays and returns the resulting hash.
    *
-   * @param bytess The byte arrays to hash.
+   * @param bytes The byte arrays to hash.
    * @return The computed SHA-256 hash.
    */
-  def apply(bytess: Bytes*): Hash = {
-    for (bytes <- bytess) {
-      TheDigest.update(bytes)
+  def apply(bytes: Bytes*): Hash = {
+    for (byte <- bytes) {
+      TheDigest.update(byte)
     }
 
     val hash = TheDigest.digest()
