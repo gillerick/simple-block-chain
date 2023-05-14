@@ -229,36 +229,52 @@ object Miner {
     Block(index, parentHash, transactions, miningTargetNumber, validNonce)
   }
 
-  // A Blockchain is a sequence of blocks, each one having an index.
-  // The index of a block is the index of its parent plus one.
-  // A Blockchain always has a genesis block at index 0, which is the lowest index.
   sealed trait Blockchain {
-    // Add a block to the chain.
-    // The return type is up to you, as explained in the definition of Unknown.
-    def append(block: Block): Unknown
+    /**
+     * Appends a block to the blockchain
+     *
+     * @param block The new block to be appended
+     */
+    def append(block: Block): Unit
 
-    // Find a block by index.
-    def findByIndex(index: Int): Unknown
+    /**
+     * Finds a block by its index. The index of a block is the index of its parent plus one.
+     *
+     * @param index The index of the block to find.
+     * @return An `Option` containing the block if found, or `None` if not found.
+     */
+    def findByIndex(index: Int): Option[Block]
 
-    // Find a block by hash.
-    def findByHash(hash: Hash): Unknown
+    /**
+     * Finds a block by its hash.
+     *
+     * @param hash The hash of the block to find.
+     * @return An `Option` containing the block if found, or `None` if not found.
+     */
+    def findByHash(hash: Hash): Option[Block]
 
-    // Find a common ancestor between this blockchain and that blockchain.
-    def common_ancestor(that: Blockchain): Unknown
+    /**
+     * Finds a common ancestor block between this blockchain and another blockchain.
+     *
+     * @param that The other blockchain to compare with.
+     * @return An `Option` containing the common ancestor block if found, or `None` if not found.
+     */
+    def commonAncestor(that: Blockchain): Option[Block]
   }
 
   // Implement an in-memory blockchain that internally has an indexing data structure.
   // The purpose of this internal data structure is to avoid traversing the linked list
   // of blocks when answering queries like findByIndex.
   class FastBlockchain extends Blockchain {
-    def append(block: Block): Unknown = ???
+    def append(block: Block): Unit = ???
 
-    def findByIndex(index: Int): Unknown = ???
+    def findByIndex(index: Int): Option[Block] = ???
 
-    def findByHash(hash: Hash): Unknown = ???
+    def findByHash(hash: Hash): Option[Block] = ???
 
-    def common_ancestor(that: Blockchain): Unknown = ???
+    def commonAncestor(that: Blockchain): Option[Block] = ???
   }
+}
 
 // Finally, please write some tests to validate some of the properties
 // you have encountered in the above description.
