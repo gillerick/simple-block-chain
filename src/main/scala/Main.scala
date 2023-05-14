@@ -1,8 +1,9 @@
 package io.iohk.atala.swetest
 
 import java.security.MessageDigest
-
 import io.iohk.atala.swetest.Base._
+
+import scala.annotation.tailrec
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -219,46 +220,45 @@ object Miner {
                      transactions: Seq[Transaction],
                      miningTargetNumber: BigInt,
                    ): Block = {
-    // Solve this informal inequality for nonce:
-    //
-    //   Hash(block; nonce).toNumber < miningTargetNumber
-    //
-    // where Hash(block; nonce) is a function of nonce only, all the other block
-    // field values are just the given method arguments.
-    ???
+    def findValidNonce(nonce: Nonce): Nonce = {
+      val block = Block(index, parentHash, transactions, miningTargetNumber, nonce)
+      if (block.cryptoHash.toNumber < miningTargetNumber) nonce else findValidNonce(nonce + 1)
+    }
+
+    val validNonce = findValidNonce(0)
+    Block(index, parentHash, transactions, miningTargetNumber, validNonce)
   }
-}
 
-// A Blockchain is a sequence of blocks, each one having an index.
-// The index of a block is the index of its parent plus one.
-// A Blockchain always has a genesis block at index 0, which is the lowest index.
-sealed trait Blockchain {
-  // Add a block to the chain.
-  // The return type is up to you, as explained in the definition of Unknown.
-  def append(block: Block): Unknown
+  // A Blockchain is a sequence of blocks, each one having an index.
+  // The index of a block is the index of its parent plus one.
+  // A Blockchain always has a genesis block at index 0, which is the lowest index.
+  sealed trait Blockchain {
+    // Add a block to the chain.
+    // The return type is up to you, as explained in the definition of Unknown.
+    def append(block: Block): Unknown
 
-  // Find a block by index.
-  def findByIndex(index: Int): Unknown
+    // Find a block by index.
+    def findByIndex(index: Int): Unknown
 
-  // Find a block by hash.
-  def findByHash(hash: Hash): Unknown
+    // Find a block by hash.
+    def findByHash(hash: Hash): Unknown
 
-  // Find a common ancestor between this blockchain and that blockchain.
-  def common_ancestor(that: Blockchain): Unknown
-}
+    // Find a common ancestor between this blockchain and that blockchain.
+    def common_ancestor(that: Blockchain): Unknown
+  }
 
-// Implement an in-memory blockchain that internally has an indexing data structure.
-// The purpose of this internal data structure is to avoid traversing the linked list
-// of blocks when answering queries like findByIndex.
-class FastBlockchain extends Blockchain {
-  def append(block: Block): Unknown = ???
+  // Implement an in-memory blockchain that internally has an indexing data structure.
+  // The purpose of this internal data structure is to avoid traversing the linked list
+  // of blocks when answering queries like findByIndex.
+  class FastBlockchain extends Blockchain {
+    def append(block: Block): Unknown = ???
 
-  def findByIndex(index: Int): Unknown = ???
+    def findByIndex(index: Int): Unknown = ???
 
-  def findByHash(hash: Hash): Unknown = ???
+    def findByHash(hash: Hash): Unknown = ???
 
-  def common_ancestor(that: Blockchain): Unknown = ???
-}
+    def common_ancestor(that: Blockchain): Unknown = ???
+  }
 
 // Finally, please write some tests to validate some of the properties
 // you have encountered in the above description.
