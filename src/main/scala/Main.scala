@@ -144,8 +144,12 @@ case class Block(
                   nonce: Nonce,
                 ) {
 
-  // To get the crypto hash of the block, just feed all fields to SHA-256.
-  def cryptoHash: Hash = ???
+  def cryptoHash: Hash = {
+    val indexBytes = index.toString.getBytes
+    val transactionBytes = transactions.flatMap(_.data.getBytes)
+    val combinedBytes = indexBytes ++ parentHash.bytes ++ transactionBytes ++ miningTargetNumber.toByteArray ++ nonce.toString.getBytes
+    Sha256(combinedBytes)
+  }
 
   // The essence of PoW is that it is a problem whose solution is easy
   // (in computational resources) to verify but difficult to find.
