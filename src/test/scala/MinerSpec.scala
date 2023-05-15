@@ -20,8 +20,7 @@ class MinerSpec extends AnyFlatSpec with Matchers {
     )
 
     //    Verify the correctness of the mining
-    genesisBlock.verifyThisHasBeenMinedProperly()
-
+    noException should be thrownBy genesisBlock.verifyThisHasBeenMinedProperly()
   }
 
   it should "mine the next block with a valid nonce" in {
@@ -39,6 +38,6 @@ class MinerSpec extends AnyFlatSpec with Matchers {
       Symbol("miningTargetNumber")(miningTargetNumber),
     )
 
-    block.verifyThisHasBeenMinedProperly()
+    noException should be thrownBy block.verifyThisHasBeenMinedProperly()
   }
 }

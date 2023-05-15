@@ -45,7 +45,7 @@ class BlockSpec extends AnyFlatSpec with Matchers {
   it should "throw an AssertionError if the block's hash is greater than or equal to the mining target number" in {
     val invalidMiningTargetNumber = Number(10)
     val block = Block(index, parentHash, transactions, invalidMiningTargetNumber, nonce)
-    assertThrows[AssertionError](block.verifyThisHasBeenMinedProperly())
+    assertThrows[BlockNotMinedProperlyException](block.verifyThisHasBeenMinedProperly())
   }
 }
 

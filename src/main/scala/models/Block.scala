@@ -40,10 +40,12 @@ case class Block(
    * Verifies that the block has been mined properly.
    * The essence of the PoW algorithm is that the computed hash of the block should be less than the mining target number.
    *
-   * @throws AssertionError if the block's hash is not less than the mining target number.
+   * @throws BlockNotMinedProperlyException if the block's hash is not less than the mining target number.
    */
   def verifyThisHasBeenMinedProperly(): Unit =
-    assert(cryptoHash.toNumber < miningTargetNumber)
+    if (cryptoHash.toNumber >= miningTargetNumber) {
+      throw BlockNotMinedProperlyException(index)
+    }
 
 }
 
@@ -56,5 +58,13 @@ object Block {
    */
   def initEmptyBlock(index: Int): Block = Block(index, Hash(Array[Byte](0)), Seq.empty, BigInt(0), 0)
 }
+
+/**
+ * A custom exception thrown when a block has not been properly mined.
+ *
+ * @param blockIndex The index of the block involved.
+ */
+case class BlockNotMinedProperlyException(blockIndex: Int) extends Exception(s"Block at index $blockIndex has not been mined properly.")
+
 
 
