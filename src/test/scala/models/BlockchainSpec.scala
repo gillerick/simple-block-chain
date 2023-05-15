@@ -8,6 +8,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import org.scalatest.matchers.should.Matchers
 
+
 class BlockchainSpec extends AnyFlatSpec with Matchers {
 
   "FastBlockchain" should "append a block and retrieve it by index" in {
@@ -27,9 +28,16 @@ class BlockchainSpec extends AnyFlatSpec with Matchers {
 
   it should "return None for a block that does not exist" in {
     val emptyBlockchain = new FastBlockchain()
+    val randomIndex = 43
 
-    val maybeBlock = emptyBlockchain.findByIndex(45)
-    maybeBlock should be(None)
+    //    Test findByIndex
+    val findByIndexMaybeBlock = emptyBlockchain.findByIndex(randomIndex)
+    findByIndexMaybeBlock should be(None)
+
+    //    Test findByHash
+    val randomHash = Hash(Array[Byte](0))
+    val findByHashMaybeBlock = emptyBlockchain.findByHash(randomHash)
+    findByHashMaybeBlock should be(None)
   }
 
   it should "retrieve a block by its hash" in {

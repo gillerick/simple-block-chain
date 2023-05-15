@@ -10,8 +10,6 @@ import utils.Base.{Bytes, Number}
  *
  * @param bytes The byte array representing the hash
  */
-// The idea behind any cryptographic hash representation in "mini-chain"
-// is to treat it as an immutable array of bytes that can be also viewed
 
 case class Hash(bytes: Bytes) {
   /**
