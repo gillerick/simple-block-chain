@@ -7,8 +7,8 @@ import utils.Base.Bytes
 import java.security.MessageDigest
 
 object Sha256 {
-  val NumberOfBytes = 32
   private val algorithm = "SHA-256"
+  val NumberOfBytes = 32
   val TheDigest: MessageDigest = MessageDigest.getInstance(algorithm)
 
   val ZeroHash: Hash = Hash(Array.fill[Byte](NumberOfBytes)(0))

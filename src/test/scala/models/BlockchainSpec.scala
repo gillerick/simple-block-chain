@@ -32,7 +32,6 @@ class BlockchainSpec extends AnyFlatSpec with Matchers {
     maybeBlock should be(None)
   }
 
-  //  ToDo: Fix failing test
   it should "retrieve a block by its hash" in {
     val blockchain = new FastBlockchain()
 

@@ -50,16 +50,16 @@ sealed trait Blockchain {
  */
 class FastBlockchain extends Blockchain {
   private val blockIndex: mutable.HashMap[Int, Block] = mutable.HashMap.empty
-  private val blockHashes: mutable.HashMap[Hash, Block] = mutable.HashMap.empty
+  private val blockHashes: mutable.HashMap[Number, Block] = mutable.HashMap.empty
 
   def append(block: Block): Unit = {
     blockIndex.put(block.index, block)
-    blockHashes.put(block.cryptoHash, block)
+    blockHashes.put(block.cryptoHash.toNumber, block)
   }
 
   def findByIndex(index: Int): Option[Block] = blockIndex.get(index)
 
-  def findByHash(hash: Hash): Option[Block] = blockHashes.get(hash)
+  def findByHash(hash: Hash): Option[Block] = blockHashes.get(hash.toNumber)
 
   def commonAncestor(that: Blockchain): Option[Block] = that match {
     case blockchain: FastBlockchain =>
