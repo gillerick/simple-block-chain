@@ -41,6 +41,7 @@ case class Block(
    * The essence of the PoW algorithm is that the computed hash of the block should be less than the mining target number.
    *
    * @throws BlockNotMinedProperlyException if the block's hash is not less than the mining target number.
+   *                                        This custom exception provides more informative error messages and allows for better error handling in production code.
    */
   def verifyThisHasBeenMinedProperly(): Unit =
     if (cryptoHash.toNumber >= miningTargetNumber) {

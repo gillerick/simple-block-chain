@@ -16,9 +16,20 @@ class BlockchainSpec extends AnyFlatSpec with Matchers {
 
     val block = Block.initEmptyBlock(blockchainIndex)
     sampleBlockChain.append(block)
+    sampleBlockChain.append(Block.initEmptyBlock(567))
 
     val retrievedBlock = sampleBlockChain.findByIndex(blockchainIndex)
     retrievedBlock shouldEqual Some(block)
+
+    //    Verify that all two blocks were correctly appended
+    sampleBlockChain.length mustBe 2
+  }
+
+  it should "return None for a block that does not exist" in {
+    val emptyBlockchain = new FastBlockchain()
+
+    val maybeBlock = emptyBlockchain.findByIndex(45)
+    maybeBlock should be(None)
   }
 
   //  ToDo: Fix failing test
@@ -26,8 +37,8 @@ class BlockchainSpec extends AnyFlatSpec with Matchers {
     val blockchain = new FastBlockchain()
 
     val block = Block.initEmptyBlock(2)
-    val blockHash = block.cryptoHash
     blockchain.append(block)
+    val blockHash = block.cryptoHash
 
     val retrievedBlock = blockchain.findByHash(blockHash)
     retrievedBlock shouldEqual Some(block)

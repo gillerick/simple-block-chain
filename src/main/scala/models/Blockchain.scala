@@ -34,6 +34,13 @@ sealed trait Blockchain {
    * @return An `Option` containing the common ancestor block if found, or `None` if not found.
    */
   def commonAncestor(that: Blockchain): Option[Block]
+
+  /**
+   * Finds the number of blocks in the blockchain
+   *
+   * @return The size of the blockchain
+   */
+  def length: Int
 }
 
 
@@ -60,6 +67,8 @@ class FastBlockchain extends Blockchain {
       commonIndices.flatMap(index => blockIndex.get(index)).headOption
     case _ => None
   }
+
+  def length: Int = blockIndex.size
 }
 
 /**
@@ -73,5 +82,7 @@ class GenericBlockchain extends Blockchain {
   override def findByHash(hash: Hash): Option[Block] = ???
 
   override def commonAncestor(that: Blockchain): Option[Block] = ???
+
+  override def length: Int = ???
 }
 
