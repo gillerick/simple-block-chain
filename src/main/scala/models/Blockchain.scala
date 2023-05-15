@@ -61,3 +61,17 @@ class FastBlockchain extends Blockchain {
     case _ => None
   }
 }
+
+/**
+ * Unimplemented Blockchain. Mainly for the purposes of testing
+ */
+class GenericBlockchain extends Blockchain {
+  override def append(block: Block): Unit = ???
+
+  override def findByIndex(index: Int): Option[Block] = ???
+
+  override def findByHash(hash: Hash): Option[Block] = ???
+
+  override def commonAncestor(that: Blockchain): Option[Block] = ???
+}
+

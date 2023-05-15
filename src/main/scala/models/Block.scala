@@ -44,4 +44,17 @@ case class Block(
    */
   def verifyThisHasBeenMinedProperly(): Unit =
     assert(cryptoHash.toNumber < miningTargetNumber)
+
 }
+
+object Block {
+  /**
+   * Initializes an empty block with the specified index. Useful for tests and experiments
+   *
+   * @param index The index of the block
+   * @return A new empty block
+   */
+  def initEmptyBlock(index: Int): Block = Block(index, Hash(Array[Byte](0)), Seq.empty, BigInt(0), 0)
+}
+
+
