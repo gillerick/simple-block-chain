@@ -36,9 +36,14 @@ class BlockSpec extends AnyFlatSpec with Matchers {
     block.cryptoHash.bytes mustEqual expectedHash.bytes
   }
 
-  //ToDo: Check why this is failing
   "verifyThisHasBeenMinedProperly" should "not throw an exception if the block has been mined properly" in {
-    val block = Block(index, parentHash, transactions, miningTargetNumber, nonce)
+    val index = 1
+    val parentHash = Sha256.ZeroHash
+    val transactions = Seq(Transaction("Transaction 1"))
+    val miningTargetNumber = Miner.StdMiningTargetNumber
+    val block = Miner.mineNextBlock(index, parentHash, transactions, miningTargetNumber)
+
+
     noException should be thrownBy block.verifyThisHasBeenMinedProperly()
   }
 
